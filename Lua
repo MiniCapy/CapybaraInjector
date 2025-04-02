@@ -1,0 +1,160 @@
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "CapybaraInjector"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Size = UDim2.new(0, 400, 0, 300)
+MainFrame.Position = UDim2.new(0.5, -200, 0.5, -150)
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.BorderSizePixel = 0
+MainFrame.ClipsDescendants = true
+MainFrame.Active = true
+MainFrame.Draggable = true
+
+local TopBar = Instance.new("Frame")
+TopBar.Name = "TopBar"
+TopBar.Size = UDim2.new(1, 0, 0, 30)
+TopBar.Position = UDim2.new(0, 0, 0, 0)
+TopBar.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+TopBar.BorderSizePixel = 0
+
+local Title = Instance.new("TextLabel")
+Title.Name = "Title"
+Title.Size = UDim2.new(0, 200, 1, 0)
+Title.Position = UDim2.new(0, 10, 0, 0)
+Title.BackgroundTransparency = 1
+Title.Text = "Capybara Injector"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 14
+
+local CloseButton = Instance.new("TextButton")
+CloseButton.Name = "CloseButton"
+CloseButton.Size = UDim2.new(0, 30, 1, 0)
+CloseButton.Position = UDim2.new(1, -30, 0, 0)
+CloseButton.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+CloseButton.BorderSizePixel = 0
+CloseButton.Text = "X"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.Font = Enum.Font.GothamBold
+CloseButton.TextSize = 14
+
+CloseButton.MouseEnter:Connect(function()
+    CloseButton.BackgroundColor3 = Color3.fromRGB(220, 50, 50)
+end)
+
+CloseButton.MouseLeave:Connect(function()
+    CloseButton.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+end)
+
+CloseButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+local ScriptBox = Instance.new("ScrollingFrame")
+ScriptBox.Name = "ScriptBox"
+ScriptBox.Size = UDim2.new(1, -20, 1, -80)
+ScriptBox.Position = UDim2.new(0, 10, 0, 40)
+ScriptBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+ScriptBox.BorderSizePixel = 0
+ScriptBox.ScrollBarThickness = 5
+ScriptBox.ScrollBarImageColor3 = Color3.fromRGB(100, 100, 100)
+
+local TextBox = Instance.new("TextBox")
+TextBox.Name = "TextBox"
+TextBox.Size = UDim2.new(1, 0, 1, 0)
+TextBox.Position = UDim2.new(0, 0, 0, 0)
+TextBox.BackgroundTransparency = 1
+TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.TextXAlignment = Enum.TextXAlignment.Left
+TextBox.TextYAlignment = Enum.TextYAlignment.Top
+TextBox.Font = Enum.Font.Code
+TextBox.TextSize = 14
+TextBox.Text = ""
+TextBox.MultiLine = true
+TextBox.TextWrapped = true
+TextBox.ClearTextOnFocus = false
+
+local BottomBar = Instance.new("Frame")
+BottomBar.Name = "BottomBar"
+BottomBar.Size = UDim2.new(1, 0, 0, 40)
+BottomBar.Position = UDim2.new(0, 0, 1, -40)
+BottomBar.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+BottomBar.BorderSizePixel = 0
+
+local ExecuteButton = Instance.new("TextButton")
+ExecuteButton.Name = "ExecuteButton"
+ExecuteButton.Size = UDim2.new(0, 100, 0, 30)
+ExecuteButton.Position = UDim2.new(0, 10, 0.5, -15)
+ExecuteButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+ExecuteButton.BorderSizePixel = 0
+ExecuteButton.Text = "Execute"
+ExecuteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ExecuteButton.Font = Enum.Font.GothamBold
+ExecuteButton.TextSize = 14
+
+local DeleteButton = Instance.new("TextButton")
+DeleteButton.Name = "DeleteButton"
+DeleteButton.Size = UDim2.new(0, 100, 0, 30)
+DeleteButton.Position = UDim2.new(0, 120, 0.5, -15)
+DeleteButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+DeleteButton.BorderSizePixel = 0
+DeleteButton.Text = "Delete"
+DeleteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+DeleteButton.Font = Enum.Font.GothamBold
+DeleteButton.TextSize = 14
+
+ExecuteButton.MouseButton1Click:Connect(function()
+    local scriptToExecute = TextBox.Text
+    if scriptToExecute and scriptToExecute ~= "" then
+        local func, errorMessage = loadstring(scriptToExecute)
+        if func then
+            pcall(func)
+        else
+            warn("Ошибка в скрипте: " .. tostring(errorMessage))
+        end
+    end
+end)
+
+DeleteButton.MouseButton1Click:Connect(function()
+    TextBox.Text = ""
+end)
+
+local function setupButtonHover(button)
+    button.MouseEnter:Connect(function()
+        button.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+    end)
+    button.MouseLeave:Connect(function()
+        button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    end)
+end
+
+setupButtonHover(ExecuteButton)
+setupButtonHover(DeleteButton)
+
+ScriptBox.Parent = MainFrame
+TextBox.Parent = ScriptBox
+TopBar.Parent = MainFrame
+Title.Parent = TopBar
+CloseButton.Parent = TopBar
+BottomBar.Parent = MainFrame
+ExecuteButton.Parent = BottomBar
+DeleteButton.Parent = BottomBar
+MainFrame.Parent = ScreenGui
+ScreenGui.Parent = PlayerGui
+
+MainFrame.Active = true
+MainFrame.Draggable = true
+
+TopBar.MouseButton1Click:Connect(function()
+    MainFrame.Active = true
+    MainFrame.Draggable = true
+end)
