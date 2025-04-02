@@ -1,3 +1,7 @@
+--capybara injector
+
+game:GetService("StarterGui"):SetCore("DevConsoleVisible", true)
+
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 local PlayerGui = Player:WaitForChild("PlayerGui")
@@ -112,6 +116,17 @@ DeleteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 DeleteButton.Font = Enum.Font.GothamBold
 DeleteButton.TextSize = 14
 
+local ConsoleButton = Instance.new("TextButton")
+ConsoleButton.Name = "ConsoleButton"
+ConsoleButton.Size = UDim2.new(0, 100, 0, 30)
+ConsoleButton.Position = UDim2.new(0, 230, 0.5, -15)
+ConsoleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+ConsoleButton.BorderSizePixel = 0
+ConsoleButton.Text = "Console"
+ConsoleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ConsoleButton.Font = Enum.Font.GothamBold
+ConsoleButton.TextSize = 14
+
 ExecuteButton.MouseButton1Click:Connect(function()
     local scriptToExecute = TextBox.Text
     if scriptToExecute and scriptToExecute ~= "" then
@@ -128,6 +143,10 @@ DeleteButton.MouseButton1Click:Connect(function()
     TextBox.Text = ""
 end)
 
+ConsoleButton.MouseButton1Click:Connect(function()
+    game:GetService("StarterGui"):SetCore("DevConsoleVisible", true)
+end)
+
 local function setupButtonHover(button)
     button.MouseEnter:Connect(function()
         button.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
@@ -139,6 +158,7 @@ end
 
 setupButtonHover(ExecuteButton)
 setupButtonHover(DeleteButton)
+setupButtonHover(ConsoleButton)
 
 ScriptBox.Parent = MainFrame
 TextBox.Parent = ScriptBox
@@ -148,6 +168,7 @@ CloseButton.Parent = TopBar
 BottomBar.Parent = MainFrame
 ExecuteButton.Parent = BottomBar
 DeleteButton.Parent = BottomBar
+ConsoleButton.Parent = BottomBar
 MainFrame.Parent = ScreenGui
 ScreenGui.Parent = PlayerGui
 
