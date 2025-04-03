@@ -1,0 +1,460 @@
+game:GetService("StarterGui"):SetCore("DevConsoleVisible", true)
+
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+
+if not isfolder("capybara inj") then
+    makefolder("capybara inj")
+end
+task.wait()
+if not isfolder("capybara inj/saved scripts") then
+    makefolder("capybara inj/saved scripts")
+end
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "CapybaraInjector"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Size = UDim2.new(0, 400, 0, 300)
+MainFrame.Position = UDim2.new(0.5, -200, 0.5, -150)
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.BorderSizePixel = 0
+MainFrame.ClipsDescendants = true
+MainFrame.Active = true
+MainFrame.Draggable = true
+
+local TopBar = Instance.new("Frame")
+TopBar.Name = "TopBar"
+TopBar.Size = UDim2.new(1, 0, 0, 30)
+TopBar.Position = UDim2.new(0, 0, 0, 0)
+TopBar.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+TopBar.BorderSizePixel = 0
+
+local Title = Instance.new("TextLabel")
+Title.Name = "Title"
+Title.Size = UDim2.new(0, 200, 1, 0)
+Title.Position = UDim2.new(0, 10, 0, 0)
+Title.BackgroundTransparency = 1
+Title.Text = "Capybara Injector"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 14
+
+local CloseButton = Instance.new("TextButton")
+CloseButton.Name = "CloseButton"
+CloseButton.Size = UDim2.new(0, 30, 1, 0)
+CloseButton.Position = UDim2.new(1, -30, 0, 0)
+CloseButton.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+CloseButton.BorderSizePixel = 0
+CloseButton.Text = "X"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.Font = Enum.Font.GothamBold
+CloseButton.TextSize = 14
+
+CloseButton.MouseEnter:Connect(function()
+    CloseButton.BackgroundColor3 = Color3.fromRGB(220, 50, 50)
+end)
+
+CloseButton.MouseLeave:Connect(function()
+    CloseButton.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+end)
+
+CloseButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+local ScriptBox = Instance.new("ScrollingFrame")
+ScriptBox.Name = "ScriptBox"
+ScriptBox.Size = UDim2.new(1, -20, 1, -80)
+ScriptBox.Position = UDim2.new(0, 10, 0, 40)
+ScriptBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+ScriptBox.BorderSizePixel = 0
+ScriptBox.ScrollBarThickness = 5
+ScriptBox.ScrollBarImageColor3 = Color3.fromRGB(100, 100, 100)
+
+local TextBox = Instance.new("TextBox")
+TextBox.Name = "TextBox"
+TextBox.Size = UDim2.new(1, 0, 1, 0)
+TextBox.Position = UDim2.new(0, 0, 0, 0)
+TextBox.BackgroundTransparency = 1
+TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.TextXAlignment = Enum.TextXAlignment.Left
+TextBox.TextYAlignment = Enum.TextYAlignment.Top
+TextBox.Font = Enum.Font.Code
+TextBox.TextSize = 14
+TextBox.Text = ""
+TextBox.MultiLine = true
+TextBox.TextWrapped = true
+TextBox.ClearTextOnFocus = false
+
+local BottomBar = Instance.new("Frame")
+BottomBar.Name = "BottomBar"
+BottomBar.Size = UDim2.new(1, 0, 0, 40)
+BottomBar.Position = UDim2.new(0, 0, 1, -40)
+BottomBar.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+BottomBar.BorderSizePixel = 0
+
+local ExecuteButton = Instance.new("TextButton")
+ExecuteButton.Name = "ExecuteButton"
+ExecuteButton.Size = UDim2.new(0, 100, 0, 30)
+ExecuteButton.Position = UDim2.new(0, 10, 0.5, -15)
+ExecuteButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+ExecuteButton.BorderSizePixel = 0
+ExecuteButton.Text = "Execute"
+ExecuteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ExecuteButton.Font = Enum.Font.GothamBold
+ExecuteButton.TextSize = 14
+
+local DeleteButton = Instance.new("TextButton")
+DeleteButton.Name = "DeleteButton"
+DeleteButton.Size = UDim2.new(0, 100, 0, 30)
+DeleteButton.Position = UDim2.new(0, 120, 0.5, -15)
+DeleteButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+DeleteButton.BorderSizePixel = 0
+DeleteButton.Text = "Delete"
+DeleteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+DeleteButton.Font = Enum.Font.GothamBold
+DeleteButton.TextSize = 14
+
+local ConsoleButton = Instance.new("TextButton")
+ConsoleButton.Name = "ConsoleButton"
+ConsoleButton.Size = UDim2.new(0, 100, 0, 30)
+ConsoleButton.Position = UDim2.new(0, 230, 0.5, -15)
+ConsoleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+ConsoleButton.BorderSizePixel = 0
+ConsoleButton.Text = "Console"
+ConsoleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ConsoleButton.Font = Enum.Font.GothamBold
+ConsoleButton.TextSize = 14
+
+local FolderButton = Instance.new("TextButton")
+FolderButton.Name = "FolderButton"
+FolderButton.Size = UDim2.new(0, 30, 0, 30)
+FolderButton.Position = UDim2.new(0, 340, 0.5, -15)
+FolderButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+FolderButton.BorderSizePixel = 0
+FolderButton.Text = "📁"
+FolderButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+FolderButton.Font = Enum.Font.GothamBold
+FolderButton.TextSize = 14
+
+local SavedScriptsFrame = Instance.new("Frame")
+SavedScriptsFrame.Name = "SavedScriptsFrame"
+SavedScriptsFrame.Size = UDim2.new(1, -20, 1, -80)
+SavedScriptsFrame.Position = UDim2.new(0, 10, 0, 40)
+SavedScriptsFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+SavedScriptsFrame.BorderSizePixel = 0
+SavedScriptsFrame.Visible = false
+
+local SavedScriptsScroll = Instance.new("ScrollingFrame")
+SavedScriptsScroll.Name = "SavedScriptsScroll"
+SavedScriptsScroll.Size = UDim2.new(1, 0, 1, -40)
+SavedScriptsScroll.Position = UDim2.new(0, 0, 0, 0)
+SavedScriptsScroll.BackgroundTransparency = 1
+SavedScriptsScroll.BorderSizePixel = 0
+SavedScriptsScroll.ScrollBarThickness = 5
+SavedScriptsScroll.ScrollBarImageColor3 = Color3.fromRGB(100, 100, 100)
+
+local SaveNewScriptButton = Instance.new("TextButton")
+SaveNewScriptButton.Name = "SaveNewScriptButton"
+SaveNewScriptButton.Size = UDim2.new(1, 0, 0, 30)
+SaveNewScriptButton.Position = UDim2.new(0, 0, 1, -30)
+SaveNewScriptButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+SaveNewScriptButton.BorderSizePixel = 0
+SaveNewScriptButton.Text = "Save New Script"
+SaveNewScriptButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+SaveNewScriptButton.Font = Enum.Font.GothamBold
+SaveNewScriptButton.TextSize = 14
+SaveNewScriptButton.Visible = false
+
+local SaveWindow = Instance.new("Frame")
+SaveWindow.Name = "SaveWindow"
+SaveWindow.Size = UDim2.new(0, 350, 0, 250)
+SaveWindow.Position = UDim2.new(0.5, -175, 0.5, -125)
+SaveWindow.AnchorPoint = Vector2.new(0.5, 0.5)
+SaveWindow.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+SaveWindow.BorderSizePixel = 0
+SaveWindow.Visible = false
+
+local SaveWindowTopBar = Instance.new("Frame")
+SaveWindowTopBar.Name = "TopBar"
+SaveWindowTopBar.Size = UDim2.new(1, 0, 0, 30)
+SaveWindowTopBar.Position = UDim2.new(0, 0, 0, 0)
+SaveWindowTopBar.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+SaveWindowTopBar.BorderSizePixel = 0
+
+local SaveWindowTitle = Instance.new("TextLabel")
+SaveWindowTitle.Name = "Title"
+SaveWindowTitle.Size = UDim2.new(0, 200, 1, 0)
+SaveWindowTitle.Position = UDim2.new(0, 10, 0, 0)
+SaveWindowTitle.BackgroundTransparency = 1
+SaveWindowTitle.Text = "Save Script"
+SaveWindowTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+SaveWindowTitle.TextXAlignment = Enum.TextXAlignment.Left
+SaveWindowTitle.Font = Enum.Font.GothamBold
+SaveWindowTitle.TextSize = 14
+
+local SaveWindowCloseButton = Instance.new("TextButton")
+SaveWindowCloseButton.Name = "CloseButton"
+SaveWindowCloseButton.Size = UDim2.new(0, 30, 1, 0)
+SaveWindowCloseButton.Position = UDim2.new(1, -30, 0, 0)
+SaveWindowCloseButton.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+SaveWindowCloseButton.BorderSizePixel = 0
+SaveWindowCloseButton.Text = "X"
+SaveWindowCloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+SaveWindowCloseButton.Font = Enum.Font.GothamBold
+SaveWindowCloseButton.TextSize = 14
+
+local ScriptNameBox = Instance.new("TextBox")
+ScriptNameBox.Name = "ScriptNameBox"
+ScriptNameBox.Size = UDim2.new(1, -20, 0, 30)
+ScriptNameBox.Position = UDim2.new(0, 10, 0, 40)
+ScriptNameBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+ScriptNameBox.BorderSizePixel = 0
+ScriptNameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+ScriptNameBox.PlaceholderText = "Script Name"
+ScriptNameBox.Font = Enum.Font.Gotham
+ScriptNameBox.TextSize = 14
+
+local ScriptContentBox = Instance.new("ScrollingFrame")
+ScriptContentBox.Name = "ScriptContentBox"
+ScriptContentBox.Size = UDim2.new(1, -20, 0, 120)
+ScriptContentBox.Position = UDim2.new(0, 10, 0, 80)
+ScriptContentBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+ScriptContentBox.BorderSizePixel = 0
+ScriptContentBox.ScrollBarThickness = 5
+ScriptContentBox.ScrollBarImageColor3 = Color3.fromRGB(100, 100, 100)
+
+local ScriptContentTextBox = Instance.new("TextBox")
+ScriptContentTextBox.Name = "ScriptContentTextBox"
+ScriptContentTextBox.Size = UDim2.new(1, 0, 1, 0)
+ScriptContentTextBox.Position = UDim2.new(0, 0, 0, 0)
+ScriptContentTextBox.BackgroundTransparency = 1
+ScriptContentTextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+ScriptContentTextBox.TextXAlignment = Enum.TextXAlignment.Left
+ScriptContentTextBox.TextYAlignment = Enum.TextYAlignment.Top
+ScriptContentTextBox.Font = Enum.Font.Code
+ScriptContentTextBox.TextSize = 14
+ScriptContentTextBox.Text = ""
+ScriptContentTextBox.MultiLine = true
+ScriptContentTextBox.TextWrapped = true
+ScriptContentTextBox.ClearTextOnFocus = false
+
+local SaveButton = Instance.new("TextButton")
+SaveButton.Name = "SaveButton"
+SaveButton.Size = UDim2.new(0, 100, 0, 30)
+SaveButton.Position = UDim2.new(0.5, -50, 1, -40)
+SaveButton.AnchorPoint = Vector2.new(0.5, 1)
+SaveButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+SaveButton.BorderSizePixel = 0
+SaveButton.Text = "Save"
+SaveButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+SaveButton.Font = Enum.Font.GothamBold
+SaveButton.TextSize = 14
+
+local function loadSavedScripts()
+    SavedScriptsScroll:ClearAllChildren()
+    
+    local files = listfiles("capybara inj/saved scripts")
+    if #files >= 1 then
+        for i, filePath in pairs(files) do
+            local fileName = filePath:match("([^/]+)$")
+            fileName = fileName:gsub("%.lua$", "")
+            
+            local scriptFrame = Instance.new("Frame")
+            scriptFrame.Name = "ScriptFrame_"..fileName
+            scriptFrame.Size = UDim2.new(1, -10, 0, 30)
+            scriptFrame.Position = UDim2.new(0, 5, 0, (i-1)*35)
+            scriptFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+            scriptFrame.BorderSizePixel = 0
+            
+            local scriptNameLabel = Instance.new("TextLabel")
+            scriptNameLabel.Name = "ScriptNameLabel"
+            scriptNameLabel.Size = UDim2.new(0.6, 0, 1, 0)
+            scriptNameLabel.Position = UDim2.new(0, 5, 0, 0)
+            scriptNameLabel.BackgroundTransparency = 1
+            scriptNameLabel.Text = fileName
+            scriptNameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+            scriptNameLabel.TextXAlignment = Enum.TextXAlignment.Left
+            scriptNameLabel.Font = Enum.Font.Gotham
+            scriptNameLabel.TextSize = 14
+            
+            local executeButton = Instance.new("TextButton")
+            executeButton.Name = "ExecuteButton"
+            executeButton.Size = UDim2.new(0, 70, 0, 25)
+            executeButton.Position = UDim2.new(0.6, 5, 0.5, -12.5)
+            executeButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+            executeButton.BorderSizePixel = 0
+            executeButton.Text = "Execute"
+            executeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+            executeButton.Font = Enum.Font.Gotham
+            executeButton.TextSize = 12
+            
+            local pasteButton = Instance.new("TextButton")
+            pasteButton.Name = "PasteButton"
+            pasteButton.Size = UDim2.new(0, 100, 0, 25)
+            pasteButton.Position = UDim2.new(0.6, 80, 0.5, -12.5)
+            pasteButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+            pasteButton.BorderSizePixel = 0
+            pasteButton.Text = "Paste to Editor"
+            pasteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+            pasteButton.Font = Enum.Font.Gotham
+            pasteButton.TextSize = 12
+            
+            executeButton.MouseButton1Click:Connect(function()
+                local scriptContent = readfile(filePath)
+                loadstring(scriptContent)()
+            end)
+            
+            pasteButton.MouseButton1Click:Connect(function()
+                local scriptContent = readfile(filePath)
+                TextBox.Text = scriptContent
+                SavedScriptsFrame.Visible = false
+                ScriptBox.Visible = true
+                SaveNewScriptButton.Visible = false
+            end)
+            
+            scriptNameLabel.Parent = scriptFrame
+            executeButton.Parent = scriptFrame
+            pasteButton.Parent = scriptFrame
+            scriptFrame.Parent = SavedScriptsScroll
+        end
+    else
+        local noScriptsLabel = Instance.new("TextLabel")
+        noScriptsLabel.Name = "NoScriptsLabel"
+        noScriptsLabel.Size = UDim2.new(1, 0, 0, 30)
+        noScriptsLabel.Position = UDim2.new(0, 0, 0, 0)
+        noScriptsLabel.BackgroundTransparency = 1
+        noScriptsLabel.Text = "No saved scripts found"
+        noScriptsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        noScriptsLabel.TextXAlignment = Enum.TextXAlignment.Center
+        noScriptsLabel.Font = Enum.Font.Gotham
+        noScriptsLabel.TextSize = 14
+        noScriptsLabel.Parent = SavedScriptsScroll
+    end
+end
+
+ExecuteButton.MouseButton1Click:Connect(function()
+    local scriptToExecute = TextBox.Text
+    if scriptToExecute and scriptToExecute ~= "" then
+        local func, errorMessage = loadstring(scriptToExecute)
+        if func then
+            pcall(func)
+        else
+            warn("Ошибка в скрипте: "..tostring(errorMessage))
+        end
+    end
+end)
+
+DeleteButton.MouseButton1Click:Connect(function()
+    TextBox.Text = ""
+end)
+
+ConsoleButton.MouseButton1Click:Connect(function()
+    game:GetService("StarterGui"):SetCore("DevConsoleVisible", true)
+end)
+
+FolderButton.MouseButton1Click:Connect(function()
+    ScriptBox.Visible = not ScriptBox.Visible
+    SavedScriptsFrame.Visible = not SavedScriptsFrame.Visible
+    SaveNewScriptButton.Visible = not SaveNewScriptButton.Visible
+    
+    if SavedScriptsFrame.Visible then
+        loadSavedScripts()
+    end
+end)
+
+SaveNewScriptButton.MouseButton1Click:Connect(function()
+    SaveWindow.Visible = true
+    ScriptContentTextBox.Text = TextBox.Text
+end)
+
+SaveWindowCloseButton.MouseButton1Click:Connect(function()
+    SaveWindow.Visible = false
+end)
+
+SaveButton.MouseButton1Click:Connect(function()
+    local scriptName = ScriptNameBox.Text
+    if scriptName and scriptName ~= "" then
+        local scriptContent = ScriptContentTextBox.Text
+        local filePath = "capybara inj/saved scripts/"..scriptName..".lua"
+        
+        writefile(filePath, scriptContent)
+        loadSavedScripts()
+        SaveWindow.Visible = false
+        ScriptNameBox.Text = ""
+    end
+end)
+
+local function setupButtonHover(button)
+    button.MouseEnter:Connect(function()
+        button.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+    end)
+    button.MouseLeave:Connect(function()
+        button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    end)
+end
+
+setupButtonHover(ExecuteButton)
+setupButtonHover(DeleteButton)
+setupButtonHover(ConsoleButton)
+setupButtonHover(FolderButton)
+setupButtonHover(SaveNewScriptButton)
+setupButtonHover(SaveButton)
+setupButtonHover(SaveWindowCloseButton)
+
+ScriptBox.Parent = MainFrame
+TextBox.Parent = ScriptBox
+TopBar.Parent = MainFrame
+Title.Parent = TopBar
+CloseButton.Parent = TopBar
+BottomBar.Parent = MainFrame
+ExecuteButton.Parent = BottomBar
+DeleteButton.Parent = BottomBar
+ConsoleButton.Parent = BottomBar
+FolderButton.Parent = BottomBar
+
+SavedScriptsFrame.Parent = MainFrame
+SavedScriptsScroll.Parent = SavedScriptsFrame
+SaveNewScriptButton.Parent = SavedScriptsFrame
+
+SaveWindowTopBar.Parent = SaveWindow
+SaveWindowTitle.Parent = SaveWindowTopBar
+SaveWindowCloseButton.Parent = SaveWindowTopBar
+ScriptNameBox.Parent = SaveWindow
+ScriptContentBox.Parent = SaveWindow
+ScriptContentTextBox.Parent = ScriptContentBox
+SaveButton.Parent = SaveWindow
+SaveWindow.Parent = MainFrame
+
+MainFrame.Parent = ScreenGui
+ScreenGui.Parent = PlayerGui
+
+MainFrame.Active = true
+MainFrame.Draggable = true
+
+TopBar.MouseButton1Click:Connect(function()
+    MainFrame.Active = true
+    MainFrame.Draggable = true
+end)
+
+SaveWindow.Active = true
+SaveWindow.Draggable = true
+SaveWindowTopBar.MouseButton1Click:Connect(function()
+    SaveWindow.Active = true
+    SaveWindow.Draggable = true
+end)
+
+local files = listfiles("capybara inj/saved scripts")
+if #files >= 1 then
+    for _,v in pairs(files) do
+        local scriptContent = readfile(v)
+        loadstring(scriptContent)()
+    end
+end
